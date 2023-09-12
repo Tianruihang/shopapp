@@ -33,6 +33,14 @@
           <view>足迹</view>
           <view>{{ footNum || 0 }}</view>
         </u-col>
+        <u-col text-align="center" span="4" @click="navigateTo('/pages/mine/myTracks')">
+          <view>钻石</view>
+          <view>{{ footNum || 0 }}</view>
+        </u-col>
+        <u-col text-align="center" span="4" @click="navigateTo('/pages/mine/myTracks')">
+          <view>水晶</view>
+          <view>{{ footNum || 0 }}</view>
+        </u-col>
       </u-row>
       <!-- 我的订单，代付款 -->
       <view class="order">
@@ -69,6 +77,7 @@
       </view>
     </div>
     <!-- 常用工具 -->
+    <ExTool />
 
     <tool />
 
@@ -76,13 +85,16 @@
 </template>
 <script>
 import tool from "@/pages/tabbar/user/utils/tool.vue";
+import exTool from "@/pages/tabbar/user/utils/exTool.vue";
 import { getCouponsNum, getFootprintNum } from "@/api/members.js";
 import { getUserWallet } from "@/api/members";
 import configs from '@/config/config'
+import ExTool from "./utils/exTool.vue";
 export default {
   components: {
     tool,
-  },
+    ExTool
+},
   data() {
     return {
       configs,
@@ -234,6 +246,7 @@ body {
   }
 
   .point {
+    margin-top: 15%;
     text-align: center;
     height: 160rpx;
 
@@ -243,6 +256,7 @@ body {
 
     // #endif
     .u-col {
+      margin-top: 2%;
       view {
         color: $u-main-color;
         font-size: 28rpx;
@@ -263,6 +277,7 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    margin-top: 5%;
     padding: 0 3%;
     color: #999;
 

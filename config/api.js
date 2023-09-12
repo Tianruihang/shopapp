@@ -4,12 +4,12 @@
  */
 // 开发环境
 const dev = {
-  im: "https://im-api.pickmall.cn",
-  common: "https://common-api.pickmall.cn",
-  buyer: "https://buyer-api.pickmall.cn",
-  // common: "http://192.168.0.113:8890",
-  // buyer: "http://192.168.0.113:8888",
-  // im: "http://192.168.0.113:8885",
+  // im: "https://im-api.pickmall.cn",
+  // common: "https://common-api.pickmall.cn",
+  // buyer: "https://buyer-api.pickmall.cn",
+  common: "http://127.0.0.1:8890",
+  buyer: "http://127.0.0.1:8888",
+  im: "http://127.0.0.1:8885",
 };
 // 生产环境
 const prod = {

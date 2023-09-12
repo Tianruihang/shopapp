@@ -8,12 +8,30 @@
 		{
 			"path": "pages/tabbar/home/index",
 			"style": {
-				"navigationBarTitleText": "首页",
+				"navigationBarTitleText": "商城",
 				"navigationStyle": "custom", // 隐藏系统导航栏
 				"navigationBarTextStyle": "black",
 				"enablePullDownRefresh":true  
 			}
 		}, 
+		{
+			"path": "pages/tabbar/task/taskList",
+			"style": {
+				"navigationBarTitleText": "任务中心",
+				// "navigationStyle": "custom", // 隐藏系统导航栏
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh":true  
+			}
+		},
+		{
+			"path": "pages/tabbar/transaction/transactionList",
+			"style": {
+				"navigationBarTitleText": "交易中心",
+				// "navigationStyle": "custom", // 隐藏系统导航栏
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh":true  
+			}
+		},
 		{
 			"path":"pages/tabbar/screen/fullScreen",
 			"style": {
@@ -104,6 +122,11 @@
 					"path": "signIn",
 					"style": {
 						"navigationBarTitleText": "签到"
+					}
+				},{
+					"path": "userCard",
+					"style": {
+						"navigationBarTitleText": "实名认证"
 					}
 				}, {
 					"path": "myTracks",
@@ -813,18 +836,24 @@
 				"selectedIconPath": "static/tabbar/home-s.png",
 				"text": "首页"
 			},
+            {
+            		"pagePath": "pages/tabbar/home/index",
+            		"iconPath": "static/tabbar/home.png",
+            		"selectedIconPath": "static/tabbar/home-s.png",
+            		"text": "商城"
+            },
 			{
-				"pagePath": "pages/tabbar/category/category",
+				"pagePath": "pages/tabbar/transaction/transactionList",
 				"iconPath": "static/tabbar/category.png",
 				"selectedIconPath": "static/tabbar/category-s.png",
-				"text": "分类"
+				"text": "交易中心"
 			},
 		
 			{
-				"pagePath": "pages/tabbar/cart/cartList",
+				"pagePath": "pages/tabbar/task/taskList",
 				"iconPath": "static/tabbar/cart.png",
 				"selectedIconPath": "static/tabbar/cart-s.png",
-				"text": "购物车"
+				"text": "任务中心"
 			},
 			{
 				"pagePath": "pages/tabbar/user/my",

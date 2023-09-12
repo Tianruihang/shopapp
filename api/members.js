@@ -45,6 +45,14 @@ export function recharge(params) {
   });
 }
 
+export function userAuth(params) {
+  return http.request({
+    url: "/passport/member/userAuth",
+    method: Method.POST,
+    params,
+  });
+}
+
 /**
  * 分页获取预存款充值记录
  * @param params

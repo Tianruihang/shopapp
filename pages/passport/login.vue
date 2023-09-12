@@ -57,9 +57,9 @@
 				</div>
 			</div>
 
-			<div v-if="current != 1" class="user-password-tips" @click="enableUserPwdBox = !enableUserPwdBox">
-				{{ !enableUserPwdBox ? "帐号密码" : "手机号" }}登录
-			</div>
+<!--			<div v-if="current != 1" class="user-password-tips" @click="enableUserPwdBox = !enableUserPwdBox">-->
+<!--				{{ !enableUserPwdBox ? "帐号密码" : "手机号" }}登录-->
+<!--			</div>-->
 
 			<!-- 循环出当前可使用的第三方登录模式 -->
 			<div class="flex login-list">
@@ -124,7 +124,7 @@
 				flage: false, //是否验证码验证
 				codeFlag: true, //验证开关，用于是否展示验证码
 				tips: "",
-				enableUserPwdBox: false, //帐号密码登录
+				enableUserPwdBox: true, //帐号密码登录
 				current: 0,
 				codeColor: "#999", //按钮验证码颜色
 				lightColor: this.$lightColor,
