@@ -53,6 +53,14 @@ export function userAuth(params) {
   });
 }
 
+export function getUserAuth() {
+  return http.request({
+    url: "/passport/member/userAtmPoint",
+    method: Method.GET,
+    needToken: true,
+  });
+}
+
 /**
  * 分页获取预存款充值记录
  * @param params

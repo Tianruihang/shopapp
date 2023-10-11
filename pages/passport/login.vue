@@ -43,6 +43,9 @@
 				<div :class="!enableUserBtnColor ? 'disable' : 'fetch'" @click="passwordLogin" class="btn">
 					帐号密码登录
 				</div>
+        <div @click="passwordRegister" class="btn">
+          注册账号
+        </div>
 			</div>
 
 			<div class="flex" v-show="current != 1">
@@ -50,7 +53,7 @@
 					<u-checkbox shape="circle" v-model="enablePrivacy" active-color="#FF5E00"></u-checkbox>
 				</u-checkbox-group>
 				<div class="tips">
-					未注册的手机号验证后将自动创建用户账号，登录即代表您已同意<span @click="navigateToPrivacy('PRIVACY_POLICY')">《隐私协议》</span>
+					注册的手机号验证后将自动使用用户账号，登录即代表您已同意<span @click="navigateToPrivacy('PRIVACY_POLICY')">《隐私协议》</span>
 					<span @click="navigateToPrivacy('USER_AGREEMENT')">
 						《用户协议》
 					</span>
@@ -655,6 +658,12 @@
 					return false;
 				}
 			},
+
+      passwordRegister(){
+        uni.navigateTo({
+          url: `/pages/passport/register`,
+        });
+      },
 
 			// 提交用户登录
 			async submitUserLogin() {

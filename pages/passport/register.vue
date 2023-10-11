@@ -8,11 +8,11 @@
 				<u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="请输入用户名"
 					class="mobile" focus v-model="userData.username" />
         <u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="手机号"
-                 class="mobile" focus v-model="userData.mobile" />
+                 class="mobile" focus v-model="userData.mobilePhone" />
 				<u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="请输入密码"
 					class="mobile" focus v-model="userData.password" type="password" />
         <u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="再次确认密码"
-                 class="mobile" focus v-model="userData.password" type="password" />
+                 class="mobile" focus v-model="userData.repassword" type="password" />
 			</div>
 			<div class="flex" v-show="current != 1">
 				<u-checkbox-group :icon-size="24" width="45rpx">
@@ -24,6 +24,9 @@
 						《用户协议》
 					</span>
 				</div>
+        <div @click="fetchCode" class="btn">
+          确认
+        </div>
 			</div>
 
 <!--			<div v-if="current != 1" class="user-password-tips" @click="enableUserPwdBox = !enableUserPwdBox">-->
@@ -78,6 +81,7 @@
 	import {
 		md5
 	} from "@/utils/md5.js";
+  import {userRegister} from "../../api/login";
 
 	export default {
 		components: {
@@ -110,6 +114,8 @@
 				userData: {
 					username: "",
 					password: "",
+          mobilePhone:"",
+          repassword:"",
 				},
 				showBack: false,
 				enableFetchCode: false,
@@ -281,35 +287,32 @@
 
 			async flage(val) {
 				if (val) {
-					if (this.$refs.uCode.canGetCode) {
-						if (this.enableUserPwdBox) {
-							this.submitUserLogin();
-							return;
-							// 执行登录
-						} else {
-							// 向后端请求验证码
-							uni.showLoading({});
-							let res = await sendMobile(this.mobile);
-							 if (this.$store.state.isShowToast){ uni.hideLoading() };
-							// 这里此提示会被this.start()方法中的提示覆盖
-							if (res.data.success) {
-								this.current = 1;
-								this.$refs.uCode.start();
-							} else {
-								uni.showToast({
-									title: res.data.message,
-									duration: 2000,
-									icon: "none",
-								});
-								this.flage = false;
-								this.$refs.verification.getCode();
-							}
-						}
-					} else {
-						!this.enableUserPwdBox ? this.$u.toast("请倒计时结束后再发送") : "";
-					}
-				} else {
-					this.$refs.verification.hide();
+          const params = JSON.parse(JSON.stringify(this.userData));
+          params.password = md5(params.password);
+          userRegister(params).then(res =>{
+            let data = res.data;
+            if (data.success) {
+              storage.setAccessToken(data.result.accessToken);
+              storage.setRefreshToken(data.result.refreshToken);
+              // 登录成功
+              uni.showToast({
+                title: "登录成功!",
+                icon: "none",
+              });
+              getUserInfo().then((user) => {
+                storage.setUserInfo(user.data.result);
+                storage.setHasLogin(true);
+              });
+              getCurrentPages().length > 1 ?
+                  uni.navigateBack({
+                    delta: getCurrentPages().length - 2,
+                  }) :
+                  uni.switchTab({
+                    url: "/pages/tabbar/home/index",
+                  });
+            }
+          })
+          return;
 				}
 			},
 		},
@@ -653,28 +656,14 @@
 					return false;
 				}
 
-				if (!this.$u.test.mobile(this.mobile)) {
-					uni.showToast({
-						title: "请填写正确手机号",
-						duration: 2000,
-						icon: "none",
-					});
-					return false;
-				}
-				if (this.tips == "重新获取验证码") {
-					uni.showLoading({
-						title: "加载中",
-					});
-					if (!this.codeFlag) {
-						let timer = setInterval(() => {
-							if (this.$refs.verification) {
-								this.$refs.verification.error(); //发送
-							}
-							clearInterval(timer);
-						}, 100);
-					}
-					 if (this.$store.state.isShowToast){ uni.hideLoading() };
-				}
+				// if (!this.$u.test.mobile(this.mobile)) {
+				// 	uni.showToast({
+				// 		title: "请填写正确手机号",
+				// 		duration: 2000,
+				// 		icon: "none",
+				// 	});
+				// 	return false;
+				// }
 				if (!this.flage) {
 					this.$refs.verification.error(); //发送
 

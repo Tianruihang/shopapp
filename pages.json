@@ -506,7 +506,12 @@
 						}
 					}
 				},
-				
+				{
+					"path": "register",
+					"style": {
+						"navigationBarTitleText": "注册账号"
+					}
+				},
 				{
 					"path": "entry/seller/index",
 					"style": {

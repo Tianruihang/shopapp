@@ -41,6 +41,16 @@ export function getAutoCoup(){
   })
 }
 
+export function userRegister(params){
+    return http.request({
+        method: "POST",
+        url:`/passport/member/register`,
+        data: params,
+        header: {
+            "content-type": "application/x-www-form-urlencoded",
+        },
+    })
+}
 
 /**
  * 发送验证码
