@@ -86,7 +86,17 @@ export function deleteAddress(id) {
     needToken: true,
   });
 }
-
+/**
+ * 获取用户积分列表
+ * @param id
+ */
+export function getPointClaimeList(id) {
+  return http.request({
+    url: `/member/address/pointList/${id}`,
+    method: Method.GET,
+    needToken: true,
+  });
+}
 
 
 /**

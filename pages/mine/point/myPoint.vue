@@ -19,15 +19,36 @@
       </u-col>
     </u-row>
 
-    <div class="point-list">
-      <view class="point-item" v-for="(item, index) in pointList" :key="index">
-        <view>
-          <view class="point-label">{{ item.content }}</view>
-          <view>{{ item.createTime}}</view>
+<!--    <div class="point-list">-->
+<!--      <view class="point-item" v-for="(item, index) in pointList" :key="index">-->
+<!--        <view>-->
+<!--          <view class="point-label">{{ item.content }}</view>-->
+<!--          <view>{{ item.createTime}}</view>-->
+<!--        </view>-->
+<!--        <view :class="[item.pointType == 'INCREASE' ? 'plus' : 'reduce']"><span>{{item.pointType == "INCREASE" ? '+' : '-'}}</span>{{ item.variablePoint }}</view>-->
+<!--      </view>-->
+<!--      <uni-load-more :status="count.loadStatus"></uni-load-more>-->
+<!--    </div>-->
+<!--    -->
+    <div>
+      <uni-section title="领取积分" type="line">
+        <view class="example">
+          <uni-transition ref="ani" custom-class="transition" :mode-class="modeClass" :styles="styles"
+                          :show="show">
+            <view class="point-item" v-for="(item, index) in pointList" :key="index">-->
+              <view>
+                <view class="point-label">{{ item.content }}</view>
+                <view>{{ item.createTime}}</view>
+              </view>
+              <view :class="[item.pointType == 'INCREASE' ? 'plus' : 'reduce']"><span>{{item.pointType == "INCREASE" ? '+' : '-'}}</span>{{ item.variablePoint }}</view>
+            </view>
+<!--            <text class="text">示例元素</text></uni-transition>-->
         </view>
-        <view :class="[item.pointType == 'INCREASE' ? 'plus' : 'reduce']"><span>{{item.pointType == "INCREASE" ? '+' : '-'}}</span>{{ item.variablePoint }}</view>
+      </uni-section>
+
+      <view class="example-body">
+        <button class="transition-button" type="primary" @click="handle('fade')">领取积分</button>
       </view>
-      <uni-load-more :status="count.loadStatus"></uni-load-more>
     </div>
   </view>
 </template>
@@ -35,6 +56,8 @@
 <script>
 import { getPointsData } from "@/api/members.js";
 import { getMemberPointSum } from "@/api/members.js";
+import { pointList } from "@/api/address.js";
+import {getPointClaimeList} from "../../../api/address";
 export default {
   data() {
     return {
@@ -42,17 +65,31 @@ export default {
         loadStatus: "more",
       },
       pointList: [], //积分数据集合
+      pointClaimeList: [], //积分待领取列表
       params: {
         pageNumber: 1,
         pageSize: 10,
       },
       pointData: {}, //累计获取 未输入 集合
+      show: true,
+      modeClass: 'fade',
+      styles: {}
     };
   },
 
   onLoad() {
     this.initPointData();
     this.getList();
+    this.styles = {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100px',
+      height: '100px',
+      borderRadius: '5px',
+      textAlign: 'center',
+      backgroundColor: '#4cd964',
+      boxShadow: '0 0 5px 1px rgba(0,0,0,0.2)'
+    }
   },
 
   /**
@@ -86,6 +123,21 @@ export default {
       });
     },
 
+    //获取积分待领取列表
+    getPointClaimeList() {
+      pointList(this.params).then((res) => {
+        if (res.data.success) {
+          this.pointClaimeList = res.data.result.records;
+          if (this.$store.state.isShowToast){ uni.hideLoading() };
+        }
+      });
+    },
+
+    handle(type) {
+      this.show = !this.show
+      this.modeClass = type
+    },
+
     /**
      * 获得累计积分使用
      */
@@ -99,6 +151,49 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.example {
+  /* #ifndef APP-NVUE */
+  display: flex;
+  /* #endif */
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  background-color: #fff;
+}
+
+.example-body {
+  padding: 10px 20px;
+  padding-bottom: 0px;
+}
+
+.transition-button {
+  /* #ifndef APP-NVUE */
+  width: 100%;
+  /* #endif */
+  flex: 1;
+  margin-bottom: 10px;
+}
+
+/* #ifndef APP-NVUE */
+.example ::v-deep .transition {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #4cd964;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* #endif */
+
+.text {
+  font-size: 14px;
+  color: #fff;
+}
 .point-list{
   margin-top: 50rpx;
 }
