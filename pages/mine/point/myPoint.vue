@@ -42,6 +42,7 @@
               </view>
               <view :class="[item.pointType == 'INCREASE' ? 'plus' : 'reduce']"><span>{{item.pointType == "INCREASE" ? '+' : '-'}}</span>{{ item.variablePoint }}</view>
             </view>
+          </uni-transition>
 <!--            <text class="text">示例元素</text></uni-transition>-->
         </view>
       </uni-section>
