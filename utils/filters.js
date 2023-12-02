@@ -505,3 +505,13 @@ export function orderStatusList (val) {
   };
   return orderStatusList[val];
 }
+
+export function orderStatusList2 (val) {
+  let orderStatusList = {
+    0: "已创建",
+    1: "已完成",
+    2: "已取消",
+    3: "待付款",
+  };
+  return orderStatusList[val];
+}

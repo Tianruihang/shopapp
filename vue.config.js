@@ -18,3 +18,12 @@
 //         })
 //     }
 // }
+
+module.exports = {
+    devServer: {
+        // port: 8080,
+        //配置跨域
+        proxy: 'http://localhost:8080/'
+        
+      },
+}

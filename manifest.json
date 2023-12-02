@@ -1,4 +1,4 @@
-{
+    {
     "name" : "lilishop",
     "appid" : "__UNI__ED807EA",
     "description" : "",
@@ -216,7 +216,8 @@
     },
     "h5" : {
         "devServer" : {
-            "disableHostCheck" : true
+            "disableHostCheck" : true,
+            "port" : 8080
         },
         "router" : {
             "mode" : "history",

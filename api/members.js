@@ -326,6 +326,16 @@ export function getUserInfo() {
 }
 
 /**
+ * 根据id获取会员信息
+ */
+export function getMemberInfo(id) {
+    return http.request({
+        url: `/passport/member/${id}`,
+        method: Method.GET,
+    });
+}
+
+/**
  * 获取当前用户的预存款
  * @returns {AxiosPromise}
  */

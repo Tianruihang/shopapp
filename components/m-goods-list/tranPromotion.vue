@@ -3,19 +3,22 @@
 		<view v-for="(item, index) in res" :key="index" class="goods-row" @click="navigateToDetailPage(item)">
 			<view class="goods-detail">
 				<div class='flex flex-a-c flex-j-sb'>
-					<div>
-						<image class='buy' :src="item.goodsImage"></image>
+					<div v-if="item.num!=undefined">
+                        <image class='buy' :src="item.face"></image>
 					</div>
+                    <div v-else>
+                        <image class='buy' src="https://img.yzcdn.cn/vant/cat.jpeg"></image>
+                    </div>
 					<view class="price-box">
-						<div v-if="item.price!=undefined">
-							数量<span>{{ item.price }} </span>
+						<div v-if="item.num!=undefined">
+							数量<span>{{ item.num }} </span>
 						</div>
 						<!-- 砍价 -->
-						<div v-if="item.purchasePrice!=undefined">
-							价格<span>{{ item.purchasePrice }} </span>
+						<div v-if="item.sellPrice!=undefined">
+							价格<span>{{ item.sellPrice }} </span>
 						</div>
-						<div v-if="!item.price">
-							合计<span>0 </span>
+						<div v-if="item.num!=undefined">
+							合计<span>{{item.num * item.sellPrice}} </span>
 						</div>
 						<button>卖给他</button>
 					</view>

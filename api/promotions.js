@@ -93,6 +93,56 @@ export function getSeckillTimeGoods(timeline) {
 }
 
 /**
+ * 获取用户订单
+ */
+export function getMemberOrders(params) {
+    return http.request({
+        url: "atm/order",
+        method: Method.GET,
+        params,
+    });
+}
+
+
+/**
+ * 获取最后一条规则
+ */
+export function getLastRule() {
+  return http.request({
+    url: "atm/order/lastRule",
+    method: Method.GET,
+  });
+}
+
+//保存表单
+export function saveOrder(params) {
+  return http.request({
+    url: `atm/order`,
+    method: Method.POST,
+    params,
+  });
+}
+
+//更新表单
+export function updateOrder(params) {
+  return http.request({
+    url: `atm/order`,
+    method: Method.PUT,
+    params,
+  });
+}
+
+//payOrder
+export function payOrder(params) {
+  return http.request({
+    url: `atm/order/payOrder`,
+    method: Method.PUT,
+    params,
+  });
+}
+
+
+/**
  * 获取全部优惠券
  * @param params
  */
