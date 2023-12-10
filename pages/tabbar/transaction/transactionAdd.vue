@@ -100,9 +100,10 @@ export default {
      */
     async addGoods() {
       this.params.payType = 0;
+      this.params.payUserId = this.$store.state.userInfo.id;
       let res = await saveOrder(this.params);
       if (res.data.success) {
-        this.onBackPress();
+        this.onBack();
       } else {
         //弹出异常
         uni.showToast({

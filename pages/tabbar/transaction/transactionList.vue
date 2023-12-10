@@ -69,7 +69,7 @@
       </button>
       <button
         class="under-btn"
-        @click="weChatShare"
+        @click="trendChart"
         plain="true"
         open-type="share"
       >
@@ -134,24 +134,24 @@ export default {
    * 显示时间活动
    */
   async onShow() {
-    await this.getTimeLine();
-    if (!this.timeLine) {
-      await uni.showToast({
-        icon: "none",
-        duration: 2000,
-        title: "今天没有活动，明天再来吧",
-      });
-    }
+    // await this.getTimeLine();
+    // if (!this.timeLine) {
+    //   await uni.showToast({
+    //     icon: "none",
+    //     duration: 2000,
+    //     title: "今天没有活动，明天再来吧",
+    //   });
+    // }
     this._setTimeInterval = setInterval(() => {
       if (this.time <= 0) {
         clearInterval(this._setTimeInterval);
-        this.getGoodsList();
         this.getTimeLine();
       } else {
         this.times = Foundation.countTimeDown(this.time);
         this.time--;
       }
-    }, 1000);
+    }, 60000);
+    this.getGoodsList();
   },
 
   onUnload() {
@@ -182,10 +182,27 @@ export default {
       });
     },
     /**
+     * 查看购买列表
+     */
+    weChatShare() {
+      uni.navigateTo({
+        url: "/pages/tabbar/transaction/transactionBuyList",
+      });
+    },
+    /**
+     * 查看走势图
+     */
+    trendChart() {
+      uni.navigateTo({
+        url: "/pages/tabbar/transaction/transactionTrendChart",
+      });
+    },
+    /**
      * 获取商品集合
      */
     async getGoodsList() {
       this.params.payType = 0;
+      this.params.status = 0;
       let res = await getMemberOrders(this.params);
       if (res.data.success && res.data.result.length != 0) {
         this.goodsList = res.data.result;

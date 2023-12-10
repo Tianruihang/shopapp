@@ -1,62 +1,35 @@
 <template>
   <view class="sale">
     <!-- <u-navbar title='限时抢购'></u-navbar> -->
-    <!-- 买家 -->
-    <view class="uni-container" v-if="payUser" v-for="(item, index) in goodsUserList" :key="index" >
+    <view class="uni-container" v-for="(item, index) in goodsUserList" :key="index" style="margin-top: 10px">
       <uni-table ref="table" border stripe>
         <uni-tr>
-          <uni-td colspan="4" align="center">买家信息</uni-td>
+          <uni-td colspan="4" align="center">发布时间: {{item.createTime}}</uni-td>
         </uni-tr>
         <uni-tr>
-          <uni-td width="14" align="left">买家手机号</uni-td>
-          <uni-td width="14" align="center">{{payUser.mobile}} </uni-td>
-          <uni-td width="14" align="left">买家姓名</uni-td>
-          <uni-td width="14" align="left">{{payUser.name}}</uni-td>
+          <uni-td width="14" align="left">★数量</uni-td>
+          <uni-td width="14" align="center">{{item.num}} </uni-td>
+          <uni-td width="14" align="left">★单价</uni-td>
+          <uni-td width="14" align="left">{{item.sellPrice}}</uni-td>
         </uni-tr>
         <uni-tr>
-          <uni-td width="14" align="left">付款截图</uni-td>
-          <uni-td width="14" align="left">
-          <img :src="item.payImg">
+          <uni-td width="14" align="left">★合计</uni-td>
+          <uni-td width="14" align="left">{{ item.num * item.sellPrice }} </uni-td>
+          <uni-td width="14" align="center">★状态</uni-td>
+          <uni-td width="14" align="center">{{orderStatusList2(item.status)}}</uni-td>
+        </uni-tr>
+        <uni-tr>
+          <uni-td width="14" align="left" colspan="2">操作</uni-td>
+          <uni-td width="14" align="left" colspan="2">
+            <button size="mini"  @click="goodDetail(item.id)" plain="true" open-type="share">
+            查看明细
+            </button>
           </uni-td>
         </uni-tr>
       </uni-table>
+      <br />
     </view>
-    <br />
-    <view class="uni-container" v-for="(item, index) in goodsUserList" :key="index" >
-      <uni-table ref="table" border stripe>
-        <uni-tr>
-          <uni-td colspan="4" align="center">订单信息</uni-td>
-        </uni-tr>
-        <uni-tr>
-          <uni-td  align="center">订单编号</uni-td>
-          <uni-td  align="center">ATM-{{item.id}}</uni-td>
-        </uni-tr>
-        <uni-tr>
-          <uni-td  align="center">订单金额</uni-td>
-          <uni-td  align="center">{{item.sellPrice * item.num}}</uni-td>
-        </uni-tr>
-        <uni-tr>
-          <uni-td  align="center">订单数量</uni-td>
-          <uni-td  align="center">{{item.num}}</uni-td>
-        </uni-tr>
-        <uni-tr>
-          <uni-td  align="center">手续费</uni-td>
-          <uni-td  align="center">{{item.charge}}</uni-td>
-        </uni-tr>
-        <uni-tr >
-          <uni-td colspan="4" align="center" >
-           交易状态: {{orderStatusList2(item.status)}}
-          </uni-td>
-        </uni-tr>
-      </uni-table>
-    </view>
-    <view align="center" v-for="(item, index) in goodsUserList" :key="index" >
-      <button size="mini" v-if="item.status !== 1" class="share-btn" @click="updateOrderStatus" plain="true" open-type="share">
-        确认收款
-      </button>
-      <button size="mini" class="share-btn" @click="onBack" plain="true" open-type="share">
-        投诉买家
-      </button>
+    <view align="center">
       <button size="mini" class="share-btn" @click="onBack" plain="true" open-type="share">
         返回
       </button>
@@ -75,10 +48,10 @@ import uniTh from '@/components/uni-table/components/uni-th/uni-th.vue'
 import uniTd from '@/components/uni-table/components/uni-td/uni-td.vue'
 import uniSection from '@/components/uni-section/uni-section.vue'
 import uniCard from '@/components/uni-card/uni-card.vue'
-import {getLastRule, getMemberOrders, payOrder, saveOrder, updateOrder} from "../../../api/promotions";
+import {getLastRule, getMemberOrders, saveOrder} from "../../../api/promotions";
 import UInput from "../../../uview-ui/components/u-input/u-input.vue";
-import {getMemberInfo} from "../../../api/members";
 import {orderStatusList2} from "../../../utils/filters";
+import {getMemberInfo} from "../../../api/members";
 export default {
   components: {
     UInput,
@@ -100,10 +73,9 @@ export default {
       times: {}, //时间集合
       onlyOne: "", //是否最后一个商品
       goodsList: [], //商品集合
-      // 买家信息
       goodsUserList: [], //商品用户集合
-      lastRule: {}, //上一条集合
       payUser: {},//支付用户
+      lastRule: {}, //上一条集合
       params: {
         pageNumber: 1,
         pageSize: 10,
@@ -116,12 +88,7 @@ export default {
    * 显示时间活动
    */
   async onShow() {
-    await this.getLastRule();
-    await this.getGoodsUserList();
-  },
-
-  async onLoad(options) {
-    this.params.orderId = options.id;
+    await this.getPayTypeUserId();
   },
 
   onUnload() {
@@ -129,20 +96,43 @@ export default {
   },
   methods: {
     orderStatusList2,
+    /**
+     * 发起订单
+     */
+    async addGoods() {
+      this.params.payType = 0;
+      let res = await saveOrder(this.params);
+      if (res.data.success) {
+        this.onBackPress();
+      } else {
+        //弹出异常
+        uni.showToast({
+          title: res.data.message,
+          icon: "none",
+          duration: 2000,
+        });
+      }
+    },
+
     // 返回上一级
     onBack() {
       uni.navigateBack();
     },
 
-    //获取买家信息
-    async getGoodsUserList() {
-      this.params.userId = this.$store.state.userInfo.id;
+    //详情
+    goodDetail(id) {
+      uni.navigateTo({
+        url: `/pages/tabbar/transaction/transactionBuyDetail?id=${id}`,
+      });
+    },
+
+    async getPayTypeUserId() {
+      this.params.payUserId = this.$store.state.userInfo.id;
       let res = await getMemberOrders(this.params);
       if (res.data.success && res.data.result.length != 0) {
         this.goodsUserList = res.data.result;
         //查看是否存在payUserId 如果有则根据payUserId查询用户信息
         this.goodsUserList.forEach(async (item) => {
-          this.order.id = item.id;
           if (item.payUserId) {
             let res = await getMemberInfo(item.payUserId);
             if (res.data.success) {
@@ -151,32 +141,7 @@ export default {
           }
         });
       } else {
-        this.goodsUserList = {};
-      }
-    },
-
-
-    async getLastRule() {
-      let res = await getLastRule();
-      if (res.data.success && res.data.result.length != 0) {
-        this.lastRule = res.data.result;
-      } else {
-        this.goodsList = {};
-      }
-    },
-
-    //更新订单状态
-    async updateOrderStatus() {
-      let res = await payOrder(this.order);
-      if (res.data.success) {
-        this.onBack();
-      } else {
-        //弹出异常
-        uni.showToast({
-          title: res.data.message,
-          icon: "none",
-          duration: 2000,
-        });
+        this.goodsUserList = [];
       }
     },
   }

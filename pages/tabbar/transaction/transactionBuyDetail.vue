@@ -5,18 +5,18 @@
     <view class="uni-container" v-if="payUser" v-for="(item, index) in goodsUserList" :key="index" >
       <uni-table ref="table" border stripe>
         <uni-tr>
-          <uni-td colspan="4" align="center">买家信息</uni-td>
+          <uni-td colspan="4" align="center">卖家信息</uni-td>
         </uni-tr>
         <uni-tr>
-          <uni-td width="14" align="left">买家手机号</uni-td>
+          <uni-td width="14" align="left">卖家手机号</uni-td>
           <uni-td width="14" align="center">{{payUser.mobile}} </uni-td>
-          <uni-td width="14" align="left">买家姓名</uni-td>
-          <uni-td width="14" align="left">{{payUser.name}}</uni-td>
+          <uni-td width="14" align="left">卖家姓名</uni-td>
+          <uni-td width="14" align="left">{{payUser.username}}</uni-td>
         </uni-tr>
         <uni-tr>
           <uni-td width="14" align="left">付款截图</uni-td>
-          <uni-td width="14" align="left">
-          <img :src="item.payImg">
+          <uni-td width="14" align="left" colspan="4">
+          <img :src="item.payImg"  style="width: 160px;height: 100px;">
           </uni-td>
         </uni-tr>
       </uni-table>
@@ -50,12 +50,22 @@
         </uni-tr>
       </uni-table>
     </view>
+    <view v-if="item.status !== 1" v-for="(item, index) in goodsUserList" :key="index" >
+      <view class="upload-item idUp" style="margin:10% 40%">
+        <u-upload @afterRead="afterRead" :header=" { accessToken: storage.getAccessToken() }" :action="action" @on-uploaded="onUploadedA" @delete="deletePic" multiple
+                  :maxCount="1" width="160" height="100">
+          <image src="@/static/style-one/sfzzm.jpg" style="width: 160px;height: 100px;">
+          </image>
+        </u-upload>
+        <text class="title">支付截图</text>
+      </view>
+    </view>
     <view align="center" v-for="(item, index) in goodsUserList" :key="index" >
-      <button size="mini" v-if="item.status !== 1" class="share-btn" @click="updateOrderStatus" plain="true" open-type="share">
-        确认收款
+      <button size="mini" class="share-btn" @click="updateOrderStatus"  v-if="item.status !== 1" plain="true" open-type="share">
+        确认支付
       </button>
-      <button size="mini" class="share-btn" @click="onBack" plain="true" open-type="share">
-        投诉买家
+      <button size="mini" v-if="item.status === 1" class="share-btn" @click="onBack" plain="true" open-type="share">
+        投诉卖家
       </button>
       <button size="mini" class="share-btn" @click="onBack" plain="true" open-type="share">
         返回
@@ -67,6 +77,7 @@
 
 <script>
 import Foundation from "@/utils/Foundation.js";
+import storage from "@/utils/storage.js";
 import tranPromotion from '@/components/m-goods-list/tranPromotion.vue'
 import pageHead from '@/components/page-head/page-head.vue'
 import uniTable from '@/components/uni-table/components/uni-table/uni-table.vue'
@@ -79,6 +90,7 @@ import {getLastRule, getMemberOrders, payOrder, saveOrder, updateOrder} from "..
 import UInput from "../../../uview-ui/components/u-input/u-input.vue";
 import {getMemberInfo} from "../../../api/members";
 import {orderStatusList2} from "../../../utils/filters";
+import { upload } from "@/api/common.js";
 export default {
   components: {
     UInput,
@@ -108,7 +120,9 @@ export default {
         pageNumber: 1,
         pageSize: 10,
       },
-      order: {}
+      order: {},
+      storage,
+      action: upload,
     };
   },
 
@@ -134,17 +148,32 @@ export default {
       uni.navigateBack();
     },
 
+    // 选择图片
+    afterRead(event) {
+      this[event.name] = event.file
+    },
+
+    onUploadedA(lists) {
+      lists.forEach((item) => {
+        this.order.payImg = item.response.result;
+      });
+    },
+
+    // 删除图片
+    deletePic(event) {
+      this[event.name] = []
+    },
+
     //获取买家信息
     async getGoodsUserList() {
-      this.params.userId = this.$store.state.userInfo.id;
       let res = await getMemberOrders(this.params);
       if (res.data.success && res.data.result.length != 0) {
         this.goodsUserList = res.data.result;
         //查看是否存在payUserId 如果有则根据payUserId查询用户信息
         this.goodsUserList.forEach(async (item) => {
           this.order.id = item.id;
-          if (item.payUserId) {
-            let res = await getMemberInfo(item.payUserId);
+          if (item.userId) {
+            let res = await getMemberInfo(item.userId);
             if (res.data.success) {
               this.payUser = res.data.result;
             }

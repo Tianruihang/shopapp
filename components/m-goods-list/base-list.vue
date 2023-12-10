@@ -210,6 +210,8 @@ export default {
 
 .goods-detail {
   margin: 0 20rpx;
+  //加入边框
+  border: 1px solid #f7f7f7;
 
   > .title {
     font-size: $font-base;

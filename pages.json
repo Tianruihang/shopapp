@@ -51,7 +51,34 @@
 		{
 			"path": "pages/tabbar/transaction/transactionSellDetail",
 			"style": {
-				"navigationBarTitleText": "订单详情",
+				"navigationBarTitleText": "订单在售详情",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/tabbar/transaction/transactionBuyList",
+			"style": {
+				"navigationBarTitleText": "购买列表",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/tabbar/transaction/transactionBuyDetail",
+			"style": {
+				"navigationBarTitleText": "订单购买详情",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/tabbar/transaction/transactionTrendChart",
+			"style": {
+				"navigationBarTitleText": "走势图",
 				"navigationStyle": "custom", // 隐藏系统导航栏
 				"navigationBarTextStyle": "black",
 				"enablePullDownRefresh": true

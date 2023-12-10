@@ -1,6 +1,6 @@
 <template>
 	<view style="width: 100px;height: 100px; display: inline;">
-		<view v-for="(item, index) in res" :key="index" class="goods-row" @click="navigateToDetailPage(item)">
+		<view v-for="(item, index) in res" :key="index" class="goods-row" @click="updateOrderStatus(item)">
 			<view class="goods-detail">
 				<div class='flex flex-a-c flex-j-sb'>
 					<div v-if="item.num!=undefined">
@@ -30,11 +30,13 @@
 
 <script>
 	import commonTpl from '@/components/m-goods-list/common'
+  import {updateOrder} from "../../api/promotions";
 	export default {
 		data() {
 			return {
 				lightColor: this.$mainColor,
-				buy: require('@/static/buy.png')
+				buy: require('@/static/buy.png'),
+        order: {}
 			}
 		},
 		mixins: [commonTpl],
@@ -61,6 +63,28 @@
 					url: `/pages/product/goods?id=${item.skuId}&goodsId=${item.goodsId}`,
 				});
 			},
+      //卖给他 更改订单状态
+      //更新订单状态
+      async updateOrderStatus(item) {
+        this.order.id = item.id;
+        this.order.status = 3;
+        let res = await updateOrder(this.order);
+        if (res.data.success) {
+          //弹出成功
+          uni.showToast({
+            title: "操作成功",
+            icon: "none",
+            duration: 2000,
+          });
+        } else {
+          //弹出异常
+          uni.showToast({
+            title: res.data.message,
+            icon: "none",
+            duration: 2000,
+          });
+        }
+      },
 		}
 	}
 </script>
