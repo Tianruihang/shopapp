@@ -9,15 +9,15 @@
         </uni-tr>
         <uni-tr>
           <uni-td width="14" align="left">★进行中</uni-td>
-          <uni-td width="14" align="center"><a>查看出售</a> </uni-td>
+          <uni-td width="14" align="center"><a @click="showOrderList" >查看出售</a> </uni-td>
           <uni-td width="14" align="left">★已完成</uni-td>
           <uni-td width="14" align="left">{{goodsUserList1.length}}</uni-td>
         </uni-tr>
         <uni-tr>
           <uni-td width="14" align="left">★已取消</uni-td>
           <uni-td width="14" align="left">{{ goodsUserList2.length }} </uni-td>
-          <uni-td width="14" align="center"><a>购买订单</a></uni-td>
-          <uni-td width="14" align="center"><a>查看购买</a></uni-td>
+          <uni-td width="14" align="center"><a @click="addOrder" >购买订单</a></uni-td>
+          <uni-td width="14" align="center"><a @click="weChatShare">查看购买</a></uni-td>
         </uni-tr>
         <uni-tr>
           <uni-td width="14" align="left">$可用ATOM</uni-td>
@@ -30,12 +30,12 @@
     <view>
       <uni-section title="交易量" type="line">
         <uni-card :is-shadow="false">
-          <text class="uni-body">{{goodsList1.length}}</text>
+          <text class="uni-body">{{goodCompleteSum}}</text>
         </uni-card>
       </uni-section>
       <uni-section title="均价" type="line">
         <uni-card :is-shadow="false">
-          <text class="uni-body">1</text>
+          <text class="uni-body">{{orderAveragePrice}}</text>
         </uni-card>
       </uni-section>
     </view>
@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import { getSeckillTimeLine, getSeckillTimeGoods } from "@/api/promotions.js";
 import Foundation from "@/utils/Foundation.js";
 import tranPromotion from "@/components/m-goods-list/tranPromotion.vue";
 import pageHead from "@/components/page-head/page-head.vue";
@@ -115,10 +114,15 @@ export default {
       times: {}, //时间集合
       onlyOne: "", //是否最后一个商品
       goodsList: [], //商品集合
+      //获取Status=1的商品集合
+      goodsListStatus: [],
       //payType=1的商品集合
       goodsList1: [],
       //payType=2的商品集合
       goodsList2: [],
+      goodCompleteSum: 0,
+      //订单平均价格
+      orderAveragePrice: 0,
       //payType=1且userId=当前用户id
       goodsUserList1: [],
       //payType=2且userId=当前用户id
@@ -152,6 +156,8 @@ export default {
       }
     }, 60000);
     this.getGoodsList();
+    this.getGoodsListStatus();
+    this.getPayTypeUserId();
   },
 
   onUnload() {
@@ -211,6 +217,28 @@ export default {
       }
     },
     /**
+     * 获取订单Status==1的商品集合
+     */
+    async getGoodsListStatus() {
+      this.params.payType = 0;
+      this.params.status = 1;
+      let res = await getMemberOrders(this.params);
+      if (res.data.success && res.data.result.length != 0) {
+        this.goodsListStatus = res.data.result;
+        //获取Status=1的商品数量
+        this.goodCompleteSum = this.goodsListStatus.filter((item) => {
+          return item.status == 1;
+        }).length;
+        //获取订单平均价格
+        this.orderAveragePrice = this.goodsListStatus.reduce((total, item) => {
+          return total + item.sellPrice;
+        }, 0);
+        this.orderAveragePrice = this.orderAveragePrice / this.goodsListStatus.length;
+      } else {
+        this.goodsListStatus = [];
+      }
+    },
+    /**
      * 查询payType=1的订单
      */
     async getPayType() {
@@ -239,7 +267,7 @@ export default {
      * payTpye=1且userId=当前用户id
      */
     async getPayTypeUserId() {
-      this.params.payType = 1;
+      this.params.status = 1;
       this.params.userId = this.$store.state.userInfo.id;
       let res = await getMemberOrders(this.params);
       if (res.data.success && res.data.result.length != 0) {

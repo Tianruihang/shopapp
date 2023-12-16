@@ -80,7 +80,6 @@ function fillChartOneTwo(info,dom) {
 
 		]
 	};
-	console.log('有效知识产权成功 ');
 	if (option && typeof option === 'object') {
 		myChart.setOption(option);
 	}
