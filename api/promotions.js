@@ -114,6 +114,16 @@ export function getLastRule() {
   });
 }
 
+/**
+ * 获取规则列表
+ */
+export function getRuleList() {
+  return http.request({
+    url: "atm/order/ruleList",
+    method: Method.GET,
+  });
+}
+
 //保存表单
 export function saveOrder(params) {
   return http.request({

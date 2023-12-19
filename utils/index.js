@@ -24,8 +24,10 @@ function fillChartOneTwo(info,dom) {
 		SYXX_YXArr.push(s.syxxYx)
 		RZ_YXArr.push(s.rzYx)
 		WGSJ_YXArr.push(s.wgsjYx)
-		DNKJCXCGKBJSHLArr.push(s.dnkjcxcgkbjshl)
-		yearArr.push(s.years);
+		console.log(s.maxUsualPrice)
+		DNKJCXCGKBJSHLArr.push(s.maxUsualPrice)
+		//获取日期的日期
+		yearArr.push(s.startTime.substring(0, 9));
 
 	}
 

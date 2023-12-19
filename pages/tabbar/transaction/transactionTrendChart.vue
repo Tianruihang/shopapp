@@ -18,18 +18,34 @@
 </template>
 <script>
 import myIndex from '@/utils/index.js';
+import {getMemberOrders, getRuleList} from "../../../api/promotions";
 export default {
   data() {
     return {
-      title: '走势图'
+      title: '走势图',
+      ruleList: []
     }
   },
   mounted() {
+    // this.refreshEchartData();
+  },
+  onShow() {
+    this.getGoodsList();
     this.refreshEchartData();
   },
   methods: {
     onBack() {
       uni.navigateBack();
+    },
+
+    //查询规则表内价格设置走势
+    async getGoodsList() {
+      let res = await getRuleList();
+      if (res.data.success && res.data.result.length != 0) {
+        this.ruleList = res.data.result;
+      } else {
+        this.ruleList = [];
+      }
     },
 
     refreshEchartData() {
@@ -83,7 +99,8 @@ export default {
       var dom = document.getElementById("dsj_cxcg");
       if (resultData.yearList != undefined && resultData.yearList.length > 0) {
         // 填充图表1 2
-        myIndex.fillChartOneTwo(resultData.yearList,dom);
+        console.log('ruleList',this.ruleList);
+        myIndex.fillChartOneTwo(this.ruleList,dom);
       }
     }
 
