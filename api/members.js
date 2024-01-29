@@ -53,6 +53,14 @@ export function userAuth(params) {
   });
 }
 
+export function userRechange(params) {
+    return http.request({
+        url: "/user/rechage",
+        method: Method.POST,
+        params,
+    });
+}
+
 export function getUserAuth() {
   return http.request({
     url: "/passport/member/userAtmPoint",

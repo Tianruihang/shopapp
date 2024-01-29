@@ -38,6 +38,10 @@
 			  <image src="/static/mine/mypoint.png" mode=""></image>
 			  <view>实名认证</view>
 			</view>
+      <view class="interact-item" @click="navigateTo('/pages/mine/userRecharge')">
+        <image src="/static/mine/mypoint.png" mode=""></image>
+        <view>账户充值</view>
+      </view>
             
         </view>
       </div>
