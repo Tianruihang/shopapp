@@ -514,6 +514,17 @@
 			]
 		},
 		{
+			"root": "pages/tabbar/machine",
+			"pages": [
+				{
+					"path": "machineList",
+					"style": {
+						"navigationBarTitleText": "机器列表"
+					}
+				}
+			]
+		},
+		{
 			"root": "pages/floor",
 			"pages": [
 				{

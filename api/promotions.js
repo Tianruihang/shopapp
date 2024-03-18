@@ -124,6 +124,42 @@ export function getRuleList() {
   });
 }
 
+/**
+ * 获取规则列表
+ */
+export function getMachineList(params) {
+  return http.request({
+    url: "atm/machine",
+    method: Method.GET,
+    params,
+  });
+}
+
+/**
+ * 获取机器详情
+ * @param params
+ * @returns {*}
+ */
+export function getMachineDetail(id) {
+    return http.request({
+        url: `atm/machine/${id}`,
+        method: Method.GET,
+    });
+
+}
+
+/**
+ * 获取用户机器详情
+ * @param params
+ * @returns {*}
+ */
+export function getMemberMachineDetail(id) {
+    return http.request({
+        url: `atm/member/user/${id}`,
+        method: Method.GET,
+    });
+}
+
 //保存表单
 export function saveOrder(params) {
   return http.request({

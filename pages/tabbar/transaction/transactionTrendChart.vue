@@ -1,4 +1,4 @@
-<template>
+1<template>
   <view class="content">
     <!-- 可视化 -->
     <view style="background-color: white; border-radius: 4px; margin-top: -4px;">

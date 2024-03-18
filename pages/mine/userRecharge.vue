@@ -101,6 +101,8 @@
 					});
 				} else {
           const params = JSON.parse(JSON.stringify(this.atmUserRecharge));
+          //获取用户ID
+          params.userId = this.$store.state.userInfo.id;
 					//提交表单
           userRechange(params).then((res) => {
             let data = res.data;
