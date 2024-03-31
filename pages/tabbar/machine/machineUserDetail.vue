@@ -2,11 +2,6 @@
   <view class="sale">
     <!-- <u-navbar title='限时抢购'></u-navbar> -->
     <!-- 买家 -->
-    <view class="uni-container" >
-      <uni-tr>
-        限购一台
-      </uni-tr>
-    </view>
     <br />
     <view class="uni-container" >
       <uni-table ref="table" border stripe>
@@ -38,6 +33,10 @@
           <uni-td  align="center">{{machine.power}}</uni-td>
         </uni-tr>
         <uni-tr>
+          <uni-td  align="center">创建时间</uni-td>
+          <uni-td  align="center"><view class="-time">{{machine.createTime}}</view></uni-td>
+        </uni-tr>
+        <uni-tr>
           <uni-td  align="center">支付方式</uni-td>
           <uni-td  align="center">ATOM</uni-td>
         </uni-tr>
@@ -63,8 +62,9 @@ import uniTd from '@/components/uni-table/components/uni-td/uni-td.vue'
 import uniSection from '@/components/uni-section/uni-section.vue'
 import uniCard from '@/components/uni-card/uni-card.vue'
 import {
+  buyMachine,
   getLastRule,
-  getMachineDetail,
+  getMachineDetail, getMemberMachineDetail,
   getMemberOrders,
   payOrder,
   saveOrder,
@@ -111,43 +111,28 @@ export default {
 
   async onLoad(options) {
     this.params.id = options.id;
+    console.log(options);
   },
 
   onUnload() {
     this._setTimeInterval && clearInterval(this._setTimeInterval);
   },
   methods: {
-    orderStatusList2,
     // 返回上一级
     onBack() {
       uni.navigateBack();
     },
 
-    //获取买家信息
+    //获取信息
     async getMachineList() {
-      let res = await getMachineDetail(this.params.id);
+      let res = await getMemberMachineDetail(this.params.id);
       if (res.data.success && res.data.result.length != 0) {
         this.machine = res.data.result;
-
       } else {
         this.machine = {};
       }
     },
 
-    //更新订单状态
-    async updateOrderStatus() {
-      let res = await payOrder(this.order);
-      if (res.data.success) {
-        this.onBack();
-      } else {
-        //弹出异常
-        uni.showToast({
-          title: res.data.message,
-          icon: "none",
-          duration: 2000,
-        });
-      }
-    },
   }
 };
 </script>

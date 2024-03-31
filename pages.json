@@ -521,6 +521,18 @@
 					"style": {
 						"navigationBarTitleText": "机器列表"
 					}
+				},
+				{
+					"path": "machineDetail",
+					"style": {
+						"navigationBarTitleText": "机器详情"
+					}
+				},
+				{
+					"path": "machineUserDetail",
+					"style": {
+						"navigationBarTitleText": "用户机器"
+					}
 				}
 			]
 		},

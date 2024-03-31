@@ -99,7 +99,6 @@ export default {
       var dom = document.getElementById("dsj_cxcg");
       if (resultData.yearList != undefined && resultData.yearList.length > 0) {
         // 填充图表1 2
-        console.log('ruleList',this.ruleList);
         myIndex.fillChartOneTwo(this.ruleList,dom);
       }
     }

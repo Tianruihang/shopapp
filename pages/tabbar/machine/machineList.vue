@@ -55,9 +55,9 @@
 				  <view class="price" v-if="coupon.couponType == 'DISCOUNT'"
 					>{{ coupon.discount }}折</view
 				  >
-				  <view class="price" v-else>任务XXX</view>
+				  <view class="price" v-else>矿机</view>
 				  <view class="sub-price"
-					>截止2023-08-31前可用</view
+					>时效{{coupon.limitHours}}小时</view
 				  >
 				</view>
 				<view class="circle circle-top"></view>
@@ -65,10 +65,10 @@
 			  </view>
 			  <view class="right" v-if="coupon">
 				<view class="content">
-				  <view class="title-1">{{ coupon.title }}</view>
-				  <view class="title-2"
-					>注册登录</view
-				  >
+				  <view class="title-1">{{coupon.name}}</view>
+<!--				  <view class="title-2"-->
+<!--					>注册登录</view-->
+<!--				  >-->
 				  <!-- <view v-if="coupon.endTime">{{ coupon.endTime }}</view> -->
 				  <view @click="couponDetail(coupon)"
 					>详细说明
@@ -78,29 +78,26 @@
 					></u-icon>
 				  </view>
 				</view>
-				<view class="jiao-1" v-if="navIndex == 0">
-				  <text class="text-1">新到</text>
-				  <text class="text-2" v-if="coupon.used_status == 1"
-					>将过期</text
-				  >
-				</view>
-				<image
-				  class="no-icon"
-				  v-if="navIndex == 1"
-				  src="@/static/img/used.png"
-				></image>
-				<image
-				  class="no-icon"
-				  v-if="navIndex == 2"
-				  src="@/static/img/overdue.png"
-				></image>
+
+
 				<view
 				  class="receive"
-				  v-if="navIndex == 0"
+				  v-if="navIndex == 1"
 				  @click="useItNow(coupon)"
 				>
-				  <text>详情</text>
+				  <text>购买</text>
+          <br />
+          <text>矿机</text>
 				</view>
+        <view
+            class="receive"
+            v-else
+            @click="useDetail(coupon)"
+        >
+          <text>查看</text>
+          <br />
+          <text>详情</text>
+        </view>
 				<!-- <view class="bg-quan"> 券 </view> -->
 			  </view>
 			</view>
@@ -126,10 +123,9 @@
 			loadStatus: "more",
 			dataList: [],
 			params: {
-        userId: "NEW",
 			  pageNumber: 1,
 			  pageSize: 10,
-			  type: 0,
+        status: 0,
 			},
 			whetherEmpty: false,
 		  },
@@ -141,7 +137,7 @@
 			  memberCouponStatus: "USED",
 			  pageNumber: 1,
 			  pageSize: 10,
-			  status: 2,
+        status: 2,
 			},
 			whetherEmpty: false,
 		  },
@@ -153,7 +149,7 @@
 			  memberCouponStatus: "EXPIRE",
 			  pageNumber: 1,
 			  pageSize: 10,
-			  status: 3,
+        status: 3,
 			},
 			whetherEmpty: false,
 		  },
@@ -165,7 +161,7 @@
           memberCouponStatus: "EXPIRE",
           pageNumber: 1,
           pageSize: 10,
-          status: 3,
+          status: 4,
         },
         whetherEmpty: false,
       },
@@ -207,7 +203,7 @@
       getMachineList(this.navList[index].params).then((res) => {
 		  uni.stopPullDownRefresh();
 		  if (res.data.success) {
-			let data = res.data.result.records;
+			let data = res.data.result;
 			if (data.length == 0) {
 			  if (res.data.pageNumber == 1) {
 				this.navList[index].whetherEmpty = true;
@@ -244,13 +240,21 @@
 	  },
   
 	  /**
-	   * 立即使用优惠券
+	   * 详情
 	   */
 	  useItNow(item) {
-		uni.navigateTo({
-		  url: `/pages/tabbar/machine/machineDetail?promotionsId=${item.couponId}&promotionType=COUPON`,
-		});
+      uni.navigateTo({
+        url: `/pages/tabbar/machine/machineDetail?id=${item.id}`,
+      });
 	  },
+    /**
+     * 用户详情
+     */
+    useDetail(item) {
+      uni.navigateTo({
+        url: `/pages/tabbar/machine/machineUserDetail?id=${item.machineId}`,
+      });
+    },
   
 	  /**
 	   * 优惠券详情
@@ -258,7 +262,7 @@
 	  couponDetail(item) {
 		uni.navigateTo({
 		  url:
-			"/pages/cart/coupon/couponDetail?item=" +
+			"/pages/tabbar/machine/couponDetail?item=" +
 			encodeURIComponent(JSON.stringify(item)),
 		});
 	  },

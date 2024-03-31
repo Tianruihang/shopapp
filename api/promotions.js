@@ -155,9 +155,23 @@ export function getMachineDetail(id) {
  */
 export function getMemberMachineDetail(id) {
     return http.request({
-        url: `atm/member/user/${id}`,
+        url: `atm/machine/user/${id}`,
         method: Method.GET,
     });
+}
+
+/**
+ * 购买机器
+ * @param params
+ * @returns {*}
+ */
+export function buyMachine(params) {
+    return http.request({
+        url: `atm/machine`,
+        method: Method.PUT,
+        params,
+    });
+
 }
 
 //保存表单
