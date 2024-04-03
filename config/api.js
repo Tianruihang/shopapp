@@ -13,9 +13,12 @@ const dev = {
 };
 // 生产环境
 const prod = {
-  im: "https://im-api.pickmall.cn",
-  common: "https://common-api.pickmall.cn",
-  buyer: "https://buyer-api.pickmall.cn",
+  // im: "https://im-api.pickmall.cn",
+  // common: "https://common-api.pickmall.cn",
+  // buyer: "https://buyer-api.pickmall.cn",
+  common: "http://101.126.5.141:8890",
+  buyer: "http://101.126.5.141:8888",
+  im: "http://101.126.5.141:8885",
 };
 
 //默认生产环境
