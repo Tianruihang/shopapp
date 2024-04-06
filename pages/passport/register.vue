@@ -13,6 +13,8 @@
 					class="mobile" focus v-model="userData.password" type="password" />
         <u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="再次确认密码"
                  class="mobile" focus v-model="userData.repassword" type="password" />
+        <u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="请填入邀请码"
+                 class="mobile" focus v-model="userData.shareId" />
 			</div>
 			<div class="flex" v-show="current != 1">
 				<u-checkbox-group :icon-size="24" width="45rpx">
@@ -114,6 +116,7 @@
 				userData: {
 					username: "",
 					password: "",
+          shareId: "",
           mobilePhone:"",
           repassword:"",
 				},
@@ -320,6 +323,8 @@
 			if (options && options.state) {
 				this.stateLogin(options.state);
 			}
+      this.userData.shareId = options.shareId;
+
 		},
 		methods: {
 			//联合信息返回登录
