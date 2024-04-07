@@ -571,6 +571,12 @@
 					}
 				},
 				{
+					"path": "sharePage",
+					"style": {
+						"navigationBarTitleText": "邀请好友"
+					}
+				},
+				{
 					"path": "entry/seller/index",
 					"style": {
 						"navigationBarTitleText": "店铺入驻",

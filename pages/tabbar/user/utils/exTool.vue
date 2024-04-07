@@ -46,6 +46,10 @@
             <image src="/static/mine/mypoint.png" mode=""></image>
             <view>矿机列表</view>
           </view>
+          <view class="interact-item" @click="navigateTo('/pages/passport/sharePage')">
+            <image src="/static/mine/mypoint.png" mode=""></image>
+            <view>邀请好友</view>
+          </view>
 
         </view>
       </div>
