@@ -7,9 +7,13 @@ const dev = {
   // im: "https://im-api.pickmall.cn",
   // common: "https://common-api.pickmall.cn",
   // buyer: "https://buyer-api.pickmall.cn",
-  common: "http://127.0.0.1:8890",
-  buyer: "http://127.0.0.1:8888",
-  im: "http://127.0.0.1:8885",
+  // common: "http://127.0.0.1:8890",
+  // buyer: "http://127.0.0.1:8888",
+  // im: "http://127.0.0.1:8885",
+  buyer: "http://101.126.5.141:8888",
+  common: "http://101.126.5.141:8890",
+  // buyer: "http://101.126.5.141:8888",
+  im: "http://101.126.5.141:8885",
 };
 // 生产环境
 const prod = {

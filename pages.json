@@ -180,6 +180,12 @@
 					}
 				},
 				{
+					"path": "userWidthdrawal",
+					"style": {
+						"navigationBarTitleText": "账户提取"
+					}
+				},
+				{
 					"path": "myTracks",
 					"style": {
 						"navigationBarTitleText": "我的足迹",

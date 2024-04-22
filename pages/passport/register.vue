@@ -306,6 +306,7 @@
                 storage.setUserInfo(user.data.result);
                 storage.setHasLogin(true);
               });
+              //跳转至用户页
               getCurrentPages().length > 1 ?
                   uni.navigateBack({
                     delta: getCurrentPages().length - 2,
@@ -660,7 +661,15 @@
 					});
 					return false;
 				}
-
+        //校验repassword
+        if (this.userData.password != this.userData.repassword) {
+          uni.showToast({
+            title: "两次密码不一致",
+            duration: 2000,
+            icon: "none",
+          });
+          return false;
+        }
 				// if (!this.$u.test.mobile(this.mobile)) {
 				// 	uni.showToast({
 				// 		title: "请填写正确手机号",

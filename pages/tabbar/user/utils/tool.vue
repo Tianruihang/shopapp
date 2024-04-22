@@ -29,14 +29,7 @@
 			  <image src="/static/mine/myfavorite.png" mode=""></image>
 			  <view>我的关注</view>
 			</view>
-			
-			
-			
-			<view class="interact-item" @click="navigateTo('/pages/mine/point/myPoint')">
-			  <image src="/static/mine/mypoint.png" mode=""></image>
-			  <view>我的积分</view>
-			</view>
-			
+
 			<view class="interact-item" @click="distribution">
 			  <image src="/static/mine/distribution.png" mode=""></image>
 			  <view>我的分销</view>

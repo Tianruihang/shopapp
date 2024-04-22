@@ -61,6 +61,24 @@ export function userRechange(params) {
     });
 }
 
+export function userWidthdraw(params) {
+    return http.request({
+        url: "/user/rechage/withdraw",
+        method: Method.POST,
+        params,
+    });
+}
+/*
+page接口
+ */
+export function rechangePage(params) {
+    return http.request({
+        url: "/user/rechage/page",
+        method: Method.POST,
+        params,
+    });
+}
+
 export function getUserAuth() {
   return http.request({
     url: "/passport/member/userAtmPoint",

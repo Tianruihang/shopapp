@@ -2,7 +2,7 @@
 	<view class="ithui-content" >
 		<view class="form">
 			<view class="form-item">
-				<label>充币数量</label>
+				<label>提币数量</label>
 				<input v-model="atmUserRecharge.num" maxlength="20" placeholder="请输入数量" autocomplete="off" class="input" />
 			</view>
 			<view class="form-item">
@@ -10,31 +10,20 @@
 				<input v-model="atmUserRecharge.userId" maxlength="18" placeholder="请输入交易密码" autocomplete="off"
 					class="input" />
 			</view>
-      <view class="form-item">
-        <label>atm收款地址</label>
-        <input v-model="atmExchangeRule.collectUrl" maxlength="18" placeholder="请输入收款地址" autocomplete="off"
-               class="input" />
-      </view>
 		</view>
-    <view>
-      <label>atm收款二维码</label>
-      <div class='goods' v-if="atmExchangeRule">
-        <image class="goods-image" :src="atmExchangeRule.collectImg" alt=""></image>
-      </div>
-    </view>
 		<view class="upload">
 			<view class="upload-item">
 				<u-upload @afterRead="afterRead" :header=" { accessToken: storage.getAccessToken() }" :action="action" @on-uploaded="onUploadedA" @delete="deletePic" multiple
 					:maxCount="1" width="160" height="100">
 				</u-upload>
-				<text class="title">上传凭证</text>
+				<text class="title">上传收款二维码</text>
 			</view>
 		</view>
 		<view class="submit">
       <u-button @click="submit" shape="circle" type="warning" >提交</u-button>
 		</view>
-    <div>
-      <u-empty  v-if="whetherEmpty" mode="empty" text="暂无数据"></u-empty>
+    <div class="scroll-v" enableBackToTop="true" scroll-y>
+      <u-empty mode="empty" v-if="whetherEmpty"  text="暂无数据"></u-empty>
       <view v-else  v-for="(item, index) in atmRechargePage.records" :key="index">
         <view class="ithui-content"  style="margin-top: 20px">
           <view class="form">
@@ -57,18 +46,18 @@
       </view>
     </div>
 	</view>
+
 </template>
 
 <script>
-  import storage from "@/utils/storage.js";
-  import {getUserAuth, userAuth, userRechange} from "../../api/members";
-  import { upload } from "@/api/common.js";
-  import {rechangePage, userWidthdraw} from "../../api/members";
-  import {getLastRule} from "../../api/promotions";
-  export default {
+import storage from "@/utils/storage.js";
+import {rechangePage, userWidthdraw} from "../../api/members";
+import {upload} from "@/api/common.js";
+
+export default {
 		data() {
 			return {
-        whetherEmpty: false, //是否为空
+        whetherEmpty: false,
 				atmUserRecharge: {
           userId: '',
           type: '0',
@@ -76,13 +65,9 @@
           fileImg: '',
 				},
         searchParam: {
-          type: 0,
+          type: 1,
         },
         atmRechargePage: [],
-        atmExchangeRule: {
-          collectImg: '',
-          collectUrl: '',
-        },
 				uploadA: [],
         action: upload, //图片上传地址
         storage,
@@ -93,18 +78,6 @@
       this.getWidthdrawalPage();
     },
 		methods: {
-
-      getUserAtmPoint(){
-        getLastRule().then((res) =>{
-          if (res.data.success) {
-            if (res.data.result)
-              this.atmExchangeRule = res.data.result;
-            else
-              this.atmExchangeRule = {};
-          }
-
-        })
-      },
 
       onUploadedA(lists) {
         lists.forEach((item) => {
@@ -131,25 +104,27 @@
           //获取用户ID
           params.userId = this.$store.state.userInfo.id;
 					//提交表单
-          userRechange(params).then((res) => {
+          userWidthdraw(params).then((res) => {
             let data = res.data;
             if (data.success) {
               uni.showToast({
                 title: "保存成功!",
                 icon: "none",
               });
-              getCurrentPages().length > 1 ?
+              //等待2秒后返回上一页
+              setTimeout(() => {
+                getCurrentPages().length > 1 ?
                   uni.navigateBack({
                     delta: getCurrentPages().length - 2,
                   }) :
                   uni.switchTab({
                     url: "/pages/tabbar/home/index",
                   });
+              }, 2000);
             }
           })
 				}
 			},
-      //列表页面
       //page页面
       getWidthdrawalPage(){
         //获取用户提币页面

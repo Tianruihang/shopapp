@@ -32,7 +32,7 @@
 
           <view class="interact-item" @click="navigateTo('/pages/mine/point/myPoint')">
             <image src="/static/mine/mypoint.png" mode=""></image>
-            <view>收款银行卡</view>
+            <view>我的积分</view>
           </view>
           <view class="interact-item" @click="navigateTo('/pages/mine/userCard')">
             <image src="/static/mine/mypoint.png" mode=""></image>
@@ -41,6 +41,10 @@
           <view class="interact-item" @click="navigateTo('/pages/mine/userRecharge')">
             <image src="/static/mine/mypoint.png" mode=""></image>
             <view>账户充值</view>
+          </view>
+          <view class="interact-item" @click="navigateTo('/pages/mine/userWidthdrawal')">
+            <image src="/static/mine/mypoint.png" mode=""></image>
+            <view>账户提取</view>
           </view>
           <view class="interact-item" @click="navigateTo('/pages/tabbar/machine/machineList')">
             <image src="/static/mine/mypoint.png" mode=""></image>
