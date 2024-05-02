@@ -38,7 +38,7 @@
 				<u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="请输入用户名"
 					class="mobile" focus v-model="userData.username" />
 				<u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="请输入密码"
-					class="mobile" focus v-model="userData.password" type="password" />
+					class="mobile" v-model="userData.password" type="password" />
 
 				<div :class="!enableUserBtnColor ? 'disable' : 'fetch'" @click="passwordLogin" class="btn">
 					帐号密码登录

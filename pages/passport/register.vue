@@ -8,13 +8,17 @@
 				<u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="请输入用户名"
 					class="mobile" focus v-model="userData.username" />
         <u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="手机号"
-                 class="mobile" focus v-model="userData.mobilePhone" />
+                 class="mobile" v-model="userData.mobilePhone" />
+        <u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="真实姓名"
+                 class="mobile" v-model="userData.name" />
+        <u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="身份证号"
+                  class="mobile" v-model="userData.idCard" />
 				<u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="请输入密码"
 					class="mobile" focus v-model="userData.password" type="password" />
         <u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="再次确认密码"
-                 class="mobile" focus v-model="userData.repassword" type="password" />
+                 class="mobile" v-model="userData.repassword" type="password" />
         <u-input :custom-style="inputStyle" :placeholder-style="placeholderStyle" placeholder="请填入邀请码"
-                 class="mobile" focus v-model="userData.shareId" />
+                 class="mobile" v-model="userData.shareId" />
 			</div>
 			<div class="flex" v-show="current != 1">
 				<u-checkbox-group :icon-size="24" width="45rpx">
@@ -116,6 +120,8 @@
 				userData: {
 					username: "",
 					password: "",
+          name: "",
+          idCard: "",
           shareId: "",
           mobilePhone:"",
           repassword:"",
@@ -670,14 +676,24 @@
           });
           return false;
         }
-				// if (!this.$u.test.mobile(this.mobile)) {
-				// 	uni.showToast({
-				// 		title: "请填写正确手机号",
-				// 		duration: 2000,
-				// 		icon: "none",
-				// 	});
-				// 	return false;
-				// }
+        //校验身份证号码
+        if (!this.$u.test.idCard(this.userData.idCard)) {
+          uni.showToast({
+            title: "请填写正确身份证号",
+            duration: 2000,
+            icon: "none",
+          });
+          return false;
+        }
+				if (!this.$u.test.mobileOne(this.userData.mobilePhone)) {
+					uni.showToast({
+						title: "请填写正确手机号",
+						duration: 2000,
+						icon: "none",
+					});
+					return false;
+				}
+        this.codeFlag = true;
 				if (!this.flage) {
 					this.$refs.verification.error(); //发送
 

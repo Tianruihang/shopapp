@@ -11,7 +11,7 @@
           <uni-td width="14" align="left">卖家手机号</uni-td>
           <uni-td width="14" align="center">{{payUser.mobile}} </uni-td>
           <uni-td width="14" align="left">卖家姓名</uni-td>
-          <uni-td width="14" align="left">{{payUser.username}}</uni-td>
+          <uni-td width="14" align="left">{{payUser.nickName}}</uni-td>
         </uni-tr>
         <uni-tr>
           <uni-td width="14" align="left">付款截图</uni-td>
@@ -86,7 +86,7 @@ import uniTh from '@/components/uni-table/components/uni-th/uni-th.vue'
 import uniTd from '@/components/uni-table/components/uni-td/uni-td.vue'
 import uniSection from '@/components/uni-section/uni-section.vue'
 import uniCard from '@/components/uni-card/uni-card.vue'
-import {getLastRule, getMemberOrders, payOrder, saveOrder, updateOrder} from "../../../api/promotions";
+import {getMemberOrders, payOrder, saveOrder, updateOrder} from "../../../api/promotions";
 import UInput from "../../../uview-ui/components/u-input/u-input.vue";
 import {getMemberInfo} from "../../../api/members";
 import {orderStatusList2} from "../../../utils/filters";
@@ -130,7 +130,6 @@ export default {
    * 显示时间活动
    */
   async onShow() {
-    await this.getLastRule();
     await this.getGoodsUserList();
   },
 
@@ -184,18 +183,9 @@ export default {
       }
     },
 
-
-    async getLastRule() {
-      let res = await getLastRule();
-      if (res.data.success && res.data.result.length != 0) {
-        this.lastRule = res.data.result;
-      } else {
-        this.goodsList = {};
-      }
-    },
-
     //更新订单状态
     async updateOrderStatus() {
+
       let res = await payOrder(this.order);
       if (res.data.success) {
         this.onBack();

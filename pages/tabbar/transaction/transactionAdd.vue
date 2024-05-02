@@ -24,7 +24,7 @@
             </uni-card>
             <uni-card :is-shadow="false">
               支付密码
-              <u-input v-model="params.pms" placeholder="请输入支付密码" />
+              <u-input v-model="params.pms" type="password" placeholder="请输入支付密码" />
             </uni-card>
           </uni-td>
         </uni-tr>
@@ -54,6 +54,10 @@ import uniSection from '@/components/uni-section/uni-section.vue'
 import uniCard from '@/components/uni-card/uni-card.vue'
 import {getLastRule, getMemberOrders, saveOrder} from "../../../api/promotions";
 import UInput from "../../../uview-ui/components/u-input/u-input.vue";
+import {
+  md5
+} from "@/utils/md5.js";
+import storage from "../../../utils/storage";
 export default {
   components: {
     UInput,
@@ -79,6 +83,7 @@ export default {
       params: {
         pageNumber: 1,
         pageSize: 10,
+        type: 0,
       },
       order: {}
     };
@@ -90,6 +95,9 @@ export default {
   async onShow() {
     await this.getLastRule();
   },
+  async onLoad(options) {
+    this.params.type = options.type;
+  },
 
   onUnload() {
     this._setTimeInterval && clearInterval(this._setTimeInterval);
@@ -100,9 +108,17 @@ export default {
      */
     async addGoods() {
       this.params.payType = 0;
-      this.params.payUserId = this.$store.state.userInfo.id;
+      this.params.payUserId = storage.getUserInfo().id;
+      this.params.pms = md5(this.params.pms);
       let res = await saveOrder(this.params);
+      this.params.pms = ""; //清空密码
       if (res.data.success) {
+        //弹出成功
+        uni.showToast({
+          title: "发布成功",
+          icon: "success",
+          duration: 2000,
+        });
         this.onBack();
       } else {
         //弹出异常
@@ -120,7 +136,7 @@ export default {
     },
 
     async getLastRule() {
-      let res = await getLastRule();
+      let res = await getLastRule(this.params);
       if (res.data.success && res.data.result.length != 0) {
         this.lastRule = res.data.result;
       } else {

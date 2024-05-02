@@ -31,6 +31,7 @@
 <script>
 	import commonTpl from '@/components/m-goods-list/common'
   import {updateOrder} from "../../api/promotions";
+  import storage from "../../utils/storage";
 	export default {
 		data() {
 			return {
@@ -68,6 +69,9 @@
       async updateOrderStatus(item) {
         this.order.id = item.id;
         this.order.status = 3;
+        //获取当前用户ID
+        this.order.payUserId = storage.getUserInfo().id;
+        console.log(this.order.payUserId);
         let res = await updateOrder(this.order);
         if (res.data.success) {
           //弹出成功

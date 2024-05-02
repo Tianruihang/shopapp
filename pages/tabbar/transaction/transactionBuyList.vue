@@ -52,6 +52,7 @@ import {getLastRule, getMemberOrders, saveOrder} from "../../../api/promotions";
 import UInput from "../../../uview-ui/components/u-input/u-input.vue";
 import {orderStatusList2} from "../../../utils/filters";
 import {getMemberInfo} from "../../../api/members";
+import storage from "../../../utils/storage";
 export default {
   components: {
     UInput,
@@ -79,6 +80,8 @@ export default {
       params: {
         pageNumber: 1,
         pageSize: 10,
+        type: 0,
+        payUserId: 0,
       },
       order: {}
     };
@@ -91,6 +94,11 @@ export default {
     await this.getPayTypeUserId();
   },
 
+  async onLoad(options) {
+    this.params.payType = options.payType;
+    this.params.type = options.type;
+  },
+
   onUnload() {
     this._setTimeInterval && clearInterval(this._setTimeInterval);
   },
@@ -100,7 +108,6 @@ export default {
      * 发起订单
      */
     async addGoods() {
-      this.params.payType = 0;
       let res = await saveOrder(this.params);
       if (res.data.success) {
         this.onBackPress();
@@ -127,7 +134,7 @@ export default {
     },
 
     async getPayTypeUserId() {
-      this.params.payUserId = this.$store.state.userInfo.id;
+      this.params.payUserId = storage.getUserInfo().id
       let res = await getMemberOrders(this.params);
       if (res.data.success && res.data.result.length != 0) {
         this.goodsUserList = res.data.result;

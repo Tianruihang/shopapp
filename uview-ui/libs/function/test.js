@@ -12,6 +12,10 @@ function mobile(value) {
 	return /^1[23456789]\d{9}$/.test(value)
 }
 
+function mobileOne(value) {
+	return /^1[23456789]\d{9}$/.test(value)
+}
+
 /**
  * 验证URL格式
  */
@@ -203,6 +207,7 @@ function object(value) {
 export default {
 	email,
 	mobile,
+	mobileOne,
 	url,
 	date,
 	dateISO,

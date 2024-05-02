@@ -11,11 +11,11 @@
           <uni-td width="14" align="left">买家手机号</uni-td>
           <uni-td width="14" align="center">{{payUser.mobile}} </uni-td>
           <uni-td width="14" align="left">买家姓名</uni-td>
-          <uni-td width="14" align="left">{{payUser.name}}</uni-td>
+          <uni-td width="14" align="left">{{payUser.nickName}}</uni-td>
         </uni-tr>
         <uni-tr>
           <uni-td width="14" align="left">付款截图</uni-td>
-          <uni-td width="14" align="left">
+          <uni-td width="14" align="left" colspan="4">
           <img :src="item.payImg">
           </uni-td>
         </uni-tr>
@@ -79,6 +79,7 @@ import {getLastRule, getMemberOrders, payOrder, saveOrder, updateOrder} from "..
 import UInput from "../../../uview-ui/components/u-input/u-input.vue";
 import {getMemberInfo} from "../../../api/members";
 import {orderStatusList2} from "../../../utils/filters";
+import storage from "../../../utils/storage";
 export default {
   components: {
     UInput,
@@ -136,7 +137,7 @@ export default {
 
     //获取买家信息
     async getGoodsUserList() {
-      this.params.userId = this.$store.state.userInfo.id;
+      this.params.userId = storage.getUserInfo().id;
       let res = await getMemberOrders(this.params);
       if (res.data.success && res.data.result.length != 0) {
         this.goodsUserList = res.data.result;

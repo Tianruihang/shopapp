@@ -103,14 +103,26 @@ export function getMemberOrders(params) {
     });
 }
 
+/**
+ * 获取其他用户订单
+ */
+export function getOtherOrders(params) {
+    return http.request({
+        url: "atm/order/other",
+        method: Method.GET,
+        params,
+    });
+
+}
 
 /**
  * 获取最后一条规则
  */
-export function getLastRule() {
+export function getLastRule(params) {
   return http.request({
     url: "atm/order/lastRule",
     method: Method.GET,
+    params,
   });
 }
 

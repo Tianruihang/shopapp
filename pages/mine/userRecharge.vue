@@ -39,7 +39,7 @@
         <view class="ithui-content"  style="margin-top: 20px">
           <view class="form">
             <view class="form-item">
-              <label>提币数量</label>
+              <label>充币数量</label>
               <input v-model="item.num" maxlength="20" autocomplete="off" class="input" disabled/>
             </view>
             <view class="form-item">
