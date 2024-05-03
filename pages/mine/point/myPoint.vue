@@ -10,13 +10,10 @@
     </view>
     <u-row class="portrait-box2">
       <u-col span="6" class="portrait-box2-col" :gutter="16">
-        <text>累计获得：</text>
-        <text class="pcolor">{{ pointData.totalPoint || 0 }}</text>
-      </u-col>
-      <u-col span="6" class="portrait-box2-col">
-        <text>剩余积分：</text>
+        <text>积分余额：</text>
         <text class="pcolor">{{ pointData.point || 0 }}</text>
       </u-col>
+
     </u-row>
 
 <!--    <div class="point-list">-->
@@ -31,25 +28,24 @@
 <!--    </div>-->
 <!--    -->
     <div>
-      <uni-section title="领取积分" type="line">
+      <uni-section title="领取积分" type="square">
+        <view class="example-body">
+          <button class="transition-button" type="primary" @click="handle('fade')">领取积分</button>
+        </view>
         <view class="example">
           <uni-transition ref="ani" custom-class="transition" :mode-class="modeClass" :styles="styles"
                           :show="show">
-            <view class="point-item" v-for="(item, index) in pointList" :key="index">-->
+            <view class="point-item" v-for="(item, index) in pointList" :key="index">
               <view>
-                <view class="point-label">{{ item.content }}</view>
-                <view>{{ item.createTime}}</view>
+                <view class="point-label">{{ item.pointName }}</view>
               </view>
-              <view :class="[item.pointType == 'INCREASE' ? 'plus' : 'reduce']"><span>{{item.pointType == "INCREASE" ? '+' : '-'}}</span>{{ item.variablePoint }}</view>
+<!--              <view :class="[item.type == 'INCREASE' ? 'plus' : 'reduce']"><span>{{item.type == "INCREASE" ? '+' : '-'}}</span>{{ item.point }}</view>-->
             </view>
           </uni-transition>
-<!--            <text class="text">示例元素</text></uni-transition>-->
         </view>
+
       </uni-section>
 
-      <view class="example-body">
-        <button class="transition-button" type="primary" @click="handle('fade')">领取积分</button>
-      </view>
     </div>
   </view>
 </template>
@@ -58,7 +54,8 @@
 import { getPointsData } from "@/api/members.js";
 import { getMemberPointSum } from "@/api/members.js";
 import { pointList } from "@/api/address.js";
-import {getPointClaimeList} from "../../../api/address";
+import {getPointClaime, getPointClaimeList} from "../../../api/address";
+import storage from "../../../utils/storage";
 export default {
   data() {
     return {
@@ -84,7 +81,7 @@ export default {
     this.styles = {
       justifyContent: 'center',
       alignItems: 'center',
-      width: '100px',
+      width: '400px',
       height: '100px',
       borderRadius: '5px',
       textAlign: 'center',
@@ -96,10 +93,10 @@ export default {
   /**
    * 触底加载
    */
-  onReachBottom() {
-    this.params.pageNumber++;
-    this.getList();
-  },
+  // onReachBottom() {
+  //   this.params.pageNumber++;
+  //   this.getList();
+  // },
   methods: {
     /**
      * 获取积分数据
@@ -109,10 +106,11 @@ export default {
       uni.showLoading({
         title: "加载中",
       });
-      getPointsData(params).then((res) => {
+      //获取用户ID
+      getPointClaimeList(storage.getUserInfo().id).then((res) => {
          if (this.$store.state.isShowToast){ uni.hideLoading() };
         if (res.data.success) {
-          let data = res.data.result.records;
+          let data = res.data.result;
           if (data.length < 10) {
             this.$set(this.count, "loadStatus", "noMore");
             this.pointList.push(...data);
@@ -124,19 +122,30 @@ export default {
       });
     },
 
-    //获取积分待领取列表
-    getPointClaimeList() {
-      pointList(this.params).then((res) => {
-        if (res.data.success) {
-          this.pointClaimeList = res.data.result.records;
-          if (this.$store.state.isShowToast){ uni.hideLoading() };
-        }
-      });
-    },
-
     handle(type) {
       this.show = !this.show
       this.modeClass = type
+      getPointClaime().then((res) => {
+        if (res.data.success) {
+          //领取成功
+          //弹框提示
+          uni.showToast({
+            title: '领取成功',
+            icon: "none",
+            duration: 2000,
+          });
+          this.getList();
+          this.initPointData();
+        }else {
+          //领取失败
+          //弹框提示
+          uni.showToast({
+            title: '领取失败,稍后重试',
+            icon: "none",
+            duration: 2000,
+          });
+        }
+      });
     },
 
     /**
@@ -164,6 +173,7 @@ export default {
 }
 
 .example-body {
+  margin-top: 10px;
   padding: 10px 20px;
   padding-bottom: 0px;
 }
@@ -178,7 +188,7 @@ export default {
 
 /* #ifndef APP-NVUE */
 .example ::v-deep .transition {
-  display: flex;
+  //display: flex;
   justify-content: center;
   align-items: center;
   width: 100px;
@@ -319,7 +329,10 @@ export default {
   
 }
 .point-label{
+    //单独一行
+    display: flex;
     font-weight: bold;
     margin-bottom: 10rpx;
+
 }
 </style>

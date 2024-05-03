@@ -98,6 +98,18 @@ export function getPointClaimeList(id) {
   });
 }
 
+/**
+ * 领取积分
+ */
+export function getPointClaime() {
+    return http.request({
+        url: `/member/address/point`,
+        method: Method.POST,
+        needToken: true,
+    });
+
+}
+
 
 /**
  * 根据ID获取会员收件地址
