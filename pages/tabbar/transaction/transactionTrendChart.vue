@@ -109,6 +109,9 @@ export default {
 
 <style>
 .content {
+  width: 90%;
+  margin: auto;
+  margin-top: 20%;
   display: flex;
   flex-direction: column;
   align-items: center;

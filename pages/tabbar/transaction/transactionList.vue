@@ -366,7 +366,8 @@ export default {
 
 <style lang="scss" scoped>
 .sale {
-  width: 100%;
+  width: 90%;
+  margin: auto;
   min-height: 100vh;
   background-color: #f7f7f7;
 }

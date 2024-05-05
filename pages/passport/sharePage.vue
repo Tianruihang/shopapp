@@ -34,7 +34,7 @@ export default {
     // 将请求的文章数据赋值
     this.articleData = storage.getUserInfo().shareId;
     console.log(this.articleData);
-    this.createQRCode("http://101.126.5.141/pages/passport/register?shareId="+ this.articleData);
+    this.createQRCode("http://atmshop.top/pages/passport/register?shareId="+ this.articleData);
 
   },
   methods: {
