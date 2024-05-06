@@ -38,9 +38,9 @@ function cleanStorage() {
 		isNavigateTo = true
 		// 防抖处理跳转
 		// #ifdef MP-WEIXIN
-		uni.navigateTo({
-			url: "/pages/passport/wechatMPLogin",
-		});
+		// uni.navigateTo({
+		// 	url: "/pages/passport/wechatMPLogin",
+		// });
 		// #endif
 		// #ifndef MP-WEIXIN
 		uni.navigateTo({

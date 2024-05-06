@@ -13,8 +13,8 @@ import socketIO from './pages/mine/im/socket';
  */
 // #ifdef H5
 if (config.enableMiniBarStartUpApp) {
-  // let btn = Vue.component("airBtn", airBtn); //全局注册
-  // document.body.appendChild(new btn().$mount().$el);
+  let btn = Vue.component("airBtn", airBtn); //全局注册
+  document.body.appendChild(new btn().$mount().$el);
 }
 // #endif
 

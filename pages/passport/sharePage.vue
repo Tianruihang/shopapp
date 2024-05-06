@@ -33,7 +33,6 @@ export default {
     this.routers = val;
     // 将请求的文章数据赋值
     this.articleData = storage.getUserInfo().shareId;
-    console.log(this.articleData);
     this.createQRCode("http://atmshop.top/pages/passport/register?shareId="+ this.articleData);
 
   },

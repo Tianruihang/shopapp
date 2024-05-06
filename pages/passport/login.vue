@@ -78,9 +78,9 @@
 			<myVerification v-if="codeFlag" @send="verification" class="verification" ref="verification"
 				business="LOGIN" />
 		</div>
-		<view v-else>
-			<wechatH5Login />
-		</view>
+<!--		<view v-else>-->
+<!--			<wechatH5Login />-->
+<!--		</view>-->
 	</div>
 </template>
 
@@ -210,11 +210,11 @@
 			
 			// #ifndef APP-PLUS
 			//判断是否微信浏览器
-			var ua = window.navigator.userAgent.toLowerCase();
-			if (ua.match(/MicroMessenger/i) == "micromessenger") {
-				this.wechatLogin = true;
-				return;
-			}
+			// var ua = window.navigator.userAgent.toLowerCase();
+			// if (ua.match(/MicroMessenger/i) == "micromessenger") {
+			// 	this.wechatLogin = true;
+			// 	return;
+			// }
 			// #endif
 			/**
 			 * 条件编译判断当前客户端类型

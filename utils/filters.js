@@ -419,9 +419,9 @@ export function forceLogin () {
   if (!userInfo || !userInfo.id) {
     // #ifdef MP-WEIXIN
 
-    uni.navigateTo({
-      url: "/pages/passport/wechatMPLogin",
-    });
+    // uni.navigateTo({
+    //   url: "/pages/passport/wechatMPLogin",
+    // });
 
     // #endif
 
@@ -457,9 +457,9 @@ export function navigateToLogin (type = "navigateTo") {
    * H5/App跳转到普通登录页面
    */
   // #ifdef MP-WEIXIN
-  uni[type]({
-    url: "/pages/passport/wechatMPLogin",
-  });
+  // uni[type]({
+  //   url: "/pages/passport/wechatMPLogin",
+  // });
   // #endif
   // #ifndef MP-WEIXIN
   uni[type]({

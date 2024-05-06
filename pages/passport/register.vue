@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper">
-		<div v-if="!wechatLogin">
+		<div>
 			<u-navbar :is-back="showBack" :border-bottom="false"></u-navbar>
 
 			<!-- 帐号密码登录 -->
@@ -53,9 +53,9 @@
 			<myVerification v-if="codeFlag" @send="verification" class="verification" ref="verification"
 				business="LOGIN" />
 		</div>
-		<view v-else>
-			<wechatH5Login />
-		</view>
+<!--		<view v-else>-->
+<!--			<wechatH5Login />-->
+<!--		</view>-->
 	</div>
 </template>
 
@@ -191,11 +191,11 @@
 			
 			// #ifndef APP-PLUS
 			//判断是否微信浏览器
-			var ua = window.navigator.userAgent.toLowerCase();
-			if (ua.match(/MicroMessenger/i) == "micromessenger") {
-				this.wechatLogin = true;
-				return;
-			}
+			// var ua = window.navigator.userAgent.toLowerCase();
+			// if (ua.match(/MicroMessenger/i) == "micromessenger") {
+			// 	this.wechatLogin = true;
+			// 	return;
+			// }
 			// #endif
 			/**
 			 * 条件编译判断当前客户端类型
@@ -204,61 +204,61 @@
 			this.clientType = "H5";
 			//#endif
 
-			//#ifdef APP-PLUS
-			this.clientType = "APP";
-			/**如果是app 加载支持的登录方式*/
-			let _this = this;
-			uni.getProvider({
-				service: "oauth",
-				success: (result) => {
-					_this.loginList = result.provider.map((value) => {
-						//展示title
-						let title = "";
-						//系统code
-						let code = "";
-						//颜色
-						let color = "#8b8b8b";
-						//图标
-						let icon = "";
-						//uni 联合登录 code
-						let appcode = "";
-						switch (value) {
-							case "weixin":
-								icon = "weixin-circle-fill";
-								color = "#00a327";
-								title = "微信";
-								code = "WECHAT";
-								break;
-							case "qq":
-								icon = "qq-circle-fill";
-								color = "#38ace9";
-								title = "QQ";
-								code = "QQ";
-								break;
-							case "apple":
-								icon = "apple-fill";
-								color = "#000000";
-								title = "Apple";
-								code = "APPLE";
-								break;
-						}
-						return {
-							title: title,
-							code: code,
-							color: color,
-							icon: icon,
-							appcode: value,
-						};
-					});
-				},
-				fail: (error) => {
-					uni.showToast({
-						title: "获取登录通道失败" + error,
-						duration: 2000,
-						icon: "none",
-					});
-				},
-			});
+			// //#ifdef APP-PLUS
+			// this.clientType = "APP";
+			// /**如果是app 加载支持的登录方式*/
+			// let _this = this;
+			// uni.getProvider({
+			// 	service: "oauth",
+			// 	success: (result) => {
+			// 		_this.loginList = result.provider.map((value) => {
+			// 			//展示title
+			// 			let title = "";
+			// 			//系统code
+			// 			let code = "";
+			// 			//颜色
+			// 			let color = "#8b8b8b";
+			// 			//图标
+			// 			let icon = "";
+			// 			//uni 联合登录 code
+			// 			let appcode = "";
+			// 			switch (value) {
+			// 				case "weixin":
+			// 					icon = "weixin-circle-fill";
+			// 					color = "#00a327";
+			// 					title = "微信";
+			// 					code = "WECHAT";
+			// 					break;
+			// 				case "qq":
+			// 					icon = "qq-circle-fill";
+			// 					color = "#38ace9";
+			// 					title = "QQ";
+			// 					code = "QQ";
+			// 					break;
+			// 				case "apple":
+			// 					icon = "apple-fill";
+			// 					color = "#000000";
+			// 					title = "Apple";
+			// 					code = "APPLE";
+			// 					break;
+			// 			}
+			// 			return {
+			// 				title: title,
+			// 				code: code,
+			// 				color: color,
+			// 				icon: icon,
+			// 				appcode: value,
+			// 			};
+			// 		});
+			// 	},
+			// 	fail: (error) => {
+			// 		uni.showToast({
+			// 			title: "获取登录通道失败" + error,
+			// 			duration: 2000,
+			// 			icon: "none",
+			// 		});
+			// 	},
+			// });
 			//#endif
 
 			//特殊平台，登录方式需要过滤
@@ -268,7 +268,7 @@
 
 			//微信小程序，只支持微信登录
 			// #ifdef MP-WEIXIN
-			this.methodFilter(["WECHAT"]);
+			// this.methodFilter(["WECHAT"]);
 			// #endif
 		},
 		watch: {
@@ -416,10 +416,10 @@
 
 								// #ifdef MP-WEIXIN
 								//微信小程序获取openid 需要特殊处理 如需获取openid请参考uni-id: https://uniapp.dcloud.net.cn/uniCloud/uni-id
-								_this.weixinMPOpenID(res).then((res) => {
-									//这里需要先行获得openid，再使用openid登录，小程序登录需要两步，所以这里特殊编译
-									_this.goOpenidLogin("WECHAT_MP");
-								});
+								// _this.weixinMPOpenID(res).then((res) => {
+								// 	//这里需要先行获得openid，再使用openid登录，小程序登录需要两步，所以这里特殊编译
+								// 	_this.goOpenidLogin("WECHAT_MP");
+								// });
 								// #endif
 
 								// #ifndef MP-WEIXIN
@@ -511,7 +511,7 @@
 				);
 				// #endif
 				// #ifdef APP-PLUS
-				this.nonH5OpenId(connectLogin);
+				// this.nonH5OpenId(connectLogin);
 				// #endif
 			},
 

@@ -4,14 +4,14 @@
     <view class="wx-auth-container">
       <div class="box">
         <view class="logo-info">
-          <text class="title">欢迎进入{{ projectName }}</text>
+          <text class="title">欢迎进入H5{{ projectName }}</text>
         </view>
         <view class="small-tips">
           <view>为您提供优质服务,{{ projectName }}需要获取以下信息</view>
           <view>您的公开信息（昵称、头像）</view>
         </view>
         <view class="btns">
-          <button @click="getUserProfile()" class="btn-auth">使用微信授权</button>
+          <button @click="getUserProfile()" class="btn-auth">H5使用微信授权</button>
           <div @click="backToHome" class="btn-callback">暂不登录</div>
         </view>
       </div>
